@@ -18,14 +18,15 @@ public enum NetworkManagerError: Error {
 @available(macOS 10.15.0, *)
 public class NetworkManager {
     // MARK: - Properties
-    private let queue = DispatchQueue(label: "com.nico.mano.pokedex.network-manager",
-                                      attributes: .concurrent)
+    private let queue: DispatchQueue
     
     let baseURL: String
 
     // MARK: - Initializers
-    public init(baseURL: String) {
+    public init(baseURL: String, queueName: String = "network-manager") {
         self.baseURL = baseURL
+        queue = DispatchQueue(label: queueName,
+                              attributes: .concurrent)
     }
 
     // MARK: - Public methods
@@ -52,8 +53,12 @@ public class NetworkManager {
         request.httpMethod = route.httpMethod.rawValue
 
         let (data, _) = try await URLSession.shared.data(for: request)
-        let result = try JSONDecoder().decode(D.self, from: data)
-
-        return result
+        
+        do {
+            let result = try JSONDecoder().decode(D.self, from: data)
+            return result
+        } catch {
+            throw NetworkManagerError.errorDecodingJson
+        }
     }
 }
