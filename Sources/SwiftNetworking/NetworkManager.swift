@@ -59,4 +59,14 @@ public class NetworkManager {
             throw NetworkManagerError.errorDecodingJson
         }
     }
+    
+    public func fetchImageAsData(_ url: String) async throws -> Data {
+        guard let url = URL(string: url) else {
+            throw NetworkManagerError.invalidURL
+        }
+
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        return data
+    }
 }
