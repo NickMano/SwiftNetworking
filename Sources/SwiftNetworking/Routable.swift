@@ -12,9 +12,3 @@ public protocol Routable {
     var queryItems: [URLQueryItem]? { get }
     var httpMethod: HttpMethod { get }
 }
-
-public enum HttpMethod: String {
-    case get = "GET"
-    case post = "POST"
-    case delete = "DELETE"
-}
