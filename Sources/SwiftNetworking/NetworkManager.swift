@@ -14,8 +14,6 @@ public enum NetworkManagerError: Error {
     case errorDecodingJson
 }
 
-@available(iOS 13.0.0, *)
-@available(macOS 10.15.0, *)
 public class NetworkManager {
     // MARK: - Properties
     private let queue: DispatchQueue
